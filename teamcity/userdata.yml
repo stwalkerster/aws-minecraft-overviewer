@@ -1,0 +1,20 @@
+#cloud-config
+version: v1
+packages_update: true
+packages:
+  - unzip
+  - default-jre
+  - nvme-cli
+users:
+  - name: teamcity-agent
+    gecos: TeamCity agent
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: adm, sudo, docker
+    lock_passwd: true
+    ssh_authorized_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFqyFogL6lQv9hSXHgH/McJpRoj3SOoLrpenMRa8vMYs agent-push-key
+runcmd:
+  - curl "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "awscliv2.zip"
+  - unzip awscliv2.zip
+  - ./aws/install
+  - rm -rf ./aws awscliv2.zip
