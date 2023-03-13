@@ -8,7 +8,7 @@ resource "aws_spot_instance_request" "runner" {
   wait_for_fulfillment = true
 
   iam_instance_profile = aws_iam_role.teamcity_overviewer.name
-  key_name             = "simon@stwalkerster.co.uk (Jan 2023)"
+  # key_name             = "simon@stwalkerster.co.uk (Jan 2023)"
 
   vpc_security_group_ids      = [aws_security_group.runner.id]
   associate_public_ip_address = true

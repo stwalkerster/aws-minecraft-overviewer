@@ -1,10 +1,10 @@
 Minecraft Overviewer on AWS
 ===============
 
-0. Generate an SSH key. Stick the private key in TeamCity in an agent push profile. Stick the public key in your userdata.yml.
-1. Get the AWS CLI set up appropriately. Review image.pkr.hcl and main.tf for relevant role_arn entries, and reconfigure according to your situation's requirements.
+0. Generate an SSH key. Stick the private key in TeamCity in an agent push profile. Stick the public key in your teamcity/userdata.yml.
+1. Get the AWS CLI set up appropriately. Review ami/image.pkr.hcl and main.tf for relevant role_arn entries, and reconfigure according to your situation's requirements.
 2. `packer build image.pkr.hcl` - this will create an AMI with Minecraft Overviewer already deployed in Docker and ready to run.
-3. If you're not me, you'll want to change the instance.tf subnet_id and vpc_id entries to not use my remote state.
+3. If you're not me, you'll want to change the instance.tf subnet_id and vpc_id entries to not use my remote state. You'll probably also want to change the security groups to allow SSH from your location, not my TeamCity instance.
 4. `terraform init` and `terraform apply --auto-approve` to create the base infrastructure for TeamCity to use
 5. Mount the two volumes to an instance, and format them with `mkfs -text4 -L VOLID /dev/nvmeXn1` where VOLID is the AWS volume ID without the "vol-" prefix
 6. Configure a TeamCity cloud profile:

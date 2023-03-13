@@ -60,10 +60,6 @@ resource "aws_iam_policy" "teamcity_agent_policy" {
 
 resource "aws_iam_access_key" "teamcity" {
   user = aws_iam_user.teamcity.name
-
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 output "teamcity_access_key_id" {

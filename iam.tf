@@ -44,20 +44,6 @@ resource "aws_iam_policy" "teamcity_overviewer" {
           "arn:aws:ec2:eu-west-1:265088867231:instance/*"
         ]
       },
-      # {
-      #   Effect = "Allow"
-      #   Action = [
-      #     "s3:PutObject",
-      #     "s3:GetObject",
-      #     "s3:ListBucket",
-      #     "s3:DeleteObject"
-      #   ]
-      #   Resource = [
-
-      #     "arn:aws:s3:::stwalkerster-minecraft-maps/*",
-      #     "arn:aws:s3:::stwalkerster-minecraft-maps"
-      #   ]
-      # }
     ]
   })
 }
