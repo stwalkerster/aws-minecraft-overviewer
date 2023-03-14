@@ -4,7 +4,7 @@ variable "default_tags" {
 }
 
 variable "terraform_role" {
-  default = "arn:aws:iam::265088867231:role/OrganizationAccountAccessRole"
+  default = "arn:aws:iam::265088867231:role/Terraform"
   type    = string
 }
 
