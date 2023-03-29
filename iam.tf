@@ -22,7 +22,7 @@ resource "aws_iam_role_policy_attachment" "teamcity_overviewer" {
 
 resource "aws_iam_role_policy_attachment" "ssm" {
   role       = aws_iam_role.teamcity_overviewer.name
-  policy_arn = "arn:aws:iam::265088867231:policy/SessionManagerPermissions"
+  policy_arn = "arn:aws:iam::${var.target_account}:policy/SessionManagerPermissions"
 }
 
 resource "aws_iam_instance_profile" "teamcity_overviewer" {
@@ -41,7 +41,7 @@ resource "aws_iam_policy" "teamcity_overviewer" {
         Resource = [
           aws_ebs_volume.maps.arn,
           aws_ebs_volume.worlds.arn,
-          "arn:aws:ec2:eu-west-1:265088867231:instance/*"
+          "arn:aws:ec2:eu-west-1:${var.target_account}:instance/*"
         ]
       },
     ]

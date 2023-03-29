@@ -25,7 +25,7 @@ provider "aws" {
   region = "eu-west-1"
 
   assume_role {
-    role_arn = var.terraform_role
+    role_arn = local.terraform_role
   }
 
   default_tags {

@@ -93,7 +93,7 @@ resource "aws_security_group" "teamcity_agent" {
   ingress {
     from_port   = 22
     to_port     = 22
-    cidr_blocks = concat([for ip in data.dns_a_record_set.teamcity.addrs : "${ip}/32"], ["94.174.232.133/32"])
+    cidr_blocks = concat([for ip in data.dns_a_record_set.teamcity.addrs : "${ip}/32"])
     protocol    = "tcp"
     description = "SSH"
   }

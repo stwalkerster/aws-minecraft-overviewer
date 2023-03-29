@@ -3,11 +3,6 @@ variable "default_tags" {
   default = {}
 }
 
-variable "terraform_role" {
-  default = "arn:aws:iam::265088867231:role/Terraform"
-  type    = string
-}
-
 variable "instance_type" {
   default = "t4g.small"
 }
@@ -16,8 +11,14 @@ locals {
   tags = merge(var.default_tags, {
     "Terraform"   = "yes"
     "Project"     = "MinecraftOverviewer"
-    "Environment" = "Sandbox"
   })
+
+  terraform_role = "arn:aws:iam::${var.target_account}:role/Terraform"
+}
+
+variable "target_account" {
+  default = "265088867231"
+  type    = string
 }
 
 variable "availability_zone" {
