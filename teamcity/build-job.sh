@@ -3,12 +3,12 @@
 if [[ $(sudo nvme list | grep -c "Elastic Block Store") == "3" ]]; then
 	echo "Disks already mounted."
 else
-	aws ec2 attach-volume --device /dev/sdf --instance-id $(ec2metadata --instance-id) --volume-id vol-012d5caf757eed965
-	aws ec2 attach-volume --device /dev/sdg --instance-id $(ec2metadata --instance-id) --volume-id vol-0f0b1d46e3860d4d5
+	aws ec2 attach-volume --device /dev/sdf --instance-id $(ec2metadata --instance-id) --volume-id vol-%volid.maps%
+	aws ec2 attach-volume --device /dev/sdg --instance-id $(ec2metadata --instance-id) --volume-id vol-%volid.worlds%
     sleep 10
     sudo mkdir -p /srv/minecraft-maps /srv/minecraft-worlds
-    sudo mount -text4 LABEL=12d5caf757eed965 /srv/minecraft-maps
-    sudo mount -text4 LABEL=f0b1d46e3860d4d5 /srv/minecraft-worlds
+    sudo mount -text4 /dev/disk/by-id/nvme-Amazon_Elastic_Block_Store_vol%volid.maps% /srv/minecraft-maps
+    sudo mount -text4 /dev/disk/by-id/nvme-Amazon_Elastic_Block_Store_vol%volid.worlds% /srv/minecraft-worlds
 fi
 
 
