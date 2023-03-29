@@ -38,11 +38,15 @@ resource "aws_iam_policy" "teamcity_overviewer" {
       {
         Effect = "Allow"
         Action = ["ec2:AttachVolume"]
-        Resource = [
-          aws_ebs_volume.maps.arn,
-          aws_ebs_volume.worlds.arn,
-          "arn:aws:ec2:eu-west-1:${var.target_account}:instance/*"
-        ]
+        Resource = concat(
+          var.no_cost ? [] : [
+            aws_ebs_volume.maps[0].arn,
+            aws_ebs_volume.worlds[0].arn
+          ],
+          [
+            "arn:aws:ec2:eu-west-1:${var.target_account}:instance/*"
+          ]
+        )
       },
     ]
   })

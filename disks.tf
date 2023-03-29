@@ -1,4 +1,6 @@
 resource "aws_ebs_volume" "maps" {
+  count = var.no_cost ? 0 : 1
+
   availability_zone = var.availability_zone
   size              = 50
 
@@ -8,6 +10,8 @@ resource "aws_ebs_volume" "maps" {
 }
 
 resource "aws_ebs_volume" "worlds" {
+  count = var.no_cost ? 0 : 1
+
   availability_zone = var.availability_zone
   size              = 3
 
@@ -17,11 +21,11 @@ resource "aws_ebs_volume" "worlds" {
 }
 
 output "ebs_maps" {
-  value = aws_ebs_volume.maps.id
+  value = var.no_cost ? null : aws_ebs_volume.maps[0].id
 }
 
 output "ebs_worlds" {
-  value = aws_ebs_volume.worlds.id
+  value = var.no_cost ? null : aws_ebs_volume.worlds[0].id
 }
 
 
@@ -43,14 +47,14 @@ resource "aws_instance" "volume_formatter" {
   user_data                   = <<-EOF
     #!/bin/bash
 
-    worlds="/dev/disk/by-id/nvme-Amazon_Elastic_Block_Store_vol${trimprefix(aws_ebs_volume.worlds.id, "vol-")}"
-    maps="/dev/disk/by-id/nvme-Amazon_Elastic_Block_Store_vol${trimprefix(aws_ebs_volume.maps.id, "vol-")}"
+    worlds="/dev/disk/by-id/nvme-Amazon_Elastic_Block_Store_vol${trimprefix(aws_ebs_volume.worlds[0].id, "vol-")}"
+    maps="/dev/disk/by-id/nvme-Amazon_Elastic_Block_Store_vol${trimprefix(aws_ebs_volume.maps[0].id, "vol-")}"
 
     while ! test -r $${worlds}; do true; done
     while ! test -r $${maps}; do true; done
 
-    mkfs -text4 -L ${trimprefix(aws_ebs_volume.worlds.id, "vol-")} $${worlds}
-    mkfs -text4 -L ${trimprefix(aws_ebs_volume.maps.id, "vol-")} $${maps}
+    mkfs -text4 -L ${trimprefix(aws_ebs_volume.worlds[0].id, "vol-")} $${worlds}
+    mkfs -text4 -L ${trimprefix(aws_ebs_volume.maps[0].id, "vol-")} $${maps}
 
     shutdown -h now
     EOF
@@ -62,7 +66,7 @@ resource "aws_volume_attachment" "maps" {
 
   device_name = "/dev/sdf"
   instance_id = aws_instance.volume_formatter[0].id
-  volume_id   = aws_ebs_volume.maps.id
+  volume_id   = aws_ebs_volume.maps[0].id
 }
 
 resource "aws_volume_attachment" "worlds" {
@@ -70,5 +74,5 @@ resource "aws_volume_attachment" "worlds" {
 
   device_name = "/dev/sdg"
   instance_id = aws_instance.volume_formatter[0].id
-  volume_id   = aws_ebs_volume.worlds.id
+  volume_id   = aws_ebs_volume.worlds[0].id
 }

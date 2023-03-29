@@ -107,8 +107,6 @@ resource "aws_security_group" "teamcity_agent" {
   }
 }
 
-
-
 output "teamcity_access_key_id" {
   value = aws_iam_access_key.teamcity.id
 }

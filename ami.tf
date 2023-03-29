@@ -1,5 +1,5 @@
 resource "aws_ami" "overviewer" {
-  count = 1
+  count = var.no_cost ? 0 : 1
 
   architecture        = "arm64"
   boot_mode           = "uefi"
@@ -22,7 +22,7 @@ resource "aws_ami" "overviewer" {
 }
 
 resource "aws_ebs_snapshot" "overviewer" {
-  count = 1
+  count = var.no_cost ? 0 : 1
 
   volume_id   = "vol-00000000000000000"
   description = "Overviewer snapshot"

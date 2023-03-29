@@ -9,8 +9,8 @@ variable "instance_type" {
 
 locals {
   tags = merge(var.default_tags, {
-    "Terraform"   = "yes"
-    "Project"     = "MinecraftOverviewer"
+    "Terraform" = "yes"
+    "Project"   = "MinecraftOverviewer"
   })
 
   terraform_role = "arn:aws:iam::${var.target_account}:role/Terraform"
@@ -33,4 +33,10 @@ variable "minecraft_version" {
 variable "format_volume" {
   default = false
   type    = bool
+}
+
+variable "no_cost" {
+  default     = false
+  type        = bool
+  description = "Attempts to reduce cost to zero. DANGER: this may destroy data"
 }
