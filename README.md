@@ -10,12 +10,12 @@ Minecraft Overviewer on AWS
 5. `terraform apply --auto-approve -var format_volume=true` to create a filesystem on each EBS volume. The created instance will terminate itself when done.
 6. Configure a TeamCity cloud profile:
     - Source = the AMI built by Packer
-    - VPC subnet = whatever works for you, but make sure the subnet can reach the internet (via public IP+IGW, or NAT GW)
+    - VPC subnet = whatever works for you, but make sure the subnet can reach the internet (via public IP+IGW, or NAT GW) and is in the same AZ as your volumes
     - IAM profile = `TeamCityOverviewer`
     - Key pair name = None is fine here, you (probably) won't be SSH-ing in.
     - Instance type = Anything arm64-based with enough CPU/RAM to ~~sink a ship~~ _do the render_.
     - SG: pick both MCOverviewer-runner and teamcity-agent
     - User script: use contents of ./teamcity/userdata.yml
     - Spot instances: yes. Set a sensible bid price for your instance type.
-7. Create a build job using the build-job.sh script. Adapt the volume IDs as needed for your volumes. Make sure you have an overviewer config handy in the working directory.
+7. Create a build job using the build-job.sh script. Adapt the volume IDs in the parameters as needed for your volumes. Make sure you have an overviewer config handy in the working directory.
 
