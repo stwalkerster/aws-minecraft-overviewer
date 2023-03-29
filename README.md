@@ -19,3 +19,14 @@ Minecraft Overviewer on AWS
     - Spot instances: yes. Set a sensible bid price for your instance type.
 7. Create a build job using the build-job.sh script. Adapt the volume IDs in the parameters as needed for your volumes. Make sure you have an overviewer config handy in the working directory.
 
+
+### Spooling up/down
+
+To spool down:
+1. `tfp -var no_cost=true` / `tfa`
+
+To spool up:
+0. Packer build / TF import
+1. `tfp -var format_volume=true` / `tfa`
+2. Update volume IDs in TeamCity
+3. Update AMIs in TeamCity
