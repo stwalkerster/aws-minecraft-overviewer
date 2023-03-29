@@ -62,6 +62,53 @@ resource "aws_iam_access_key" "teamcity" {
   user = aws_iam_user.teamcity.name
 }
 
+resource "aws_security_group" "runner" {
+  name        = "MCOverviewer-runner"
+  description = "Minecraft Overviewer runner"
+  vpc_id      = data.terraform_remote_state.vpc.outputs.vpc_id
+
+  dynamic "egress" {
+    for_each = {
+      "SSM comms HTTPS" = 443
+      "Apt-get HTTP"    = 80
+      "Git SSH"         = 22
+    }
+
+    content {
+      cidr_blocks      = ["0.0.0.0/0"]
+      ipv6_cidr_blocks = ["::/0"]
+      to_port          = egress.value
+      from_port        = egress.value
+      protocol         = "tcp"
+      description      = egress.key
+    }
+  }
+}
+
+resource "aws_security_group" "teamcity_agent" {
+  name        = "teamcity-agent"
+  description = "TeamCity agent"
+  vpc_id      = data.terraform_remote_state.vpc.outputs.vpc_id
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    cidr_blocks = concat([for ip in data.dns_a_record_set.teamcity.addrs : "${ip}/32"], ["94.174.232.133/32"])
+    protocol    = "tcp"
+    description = "SSH"
+  }
+
+  egress {
+    from_port   = 443
+    to_port     = 443
+    cidr_blocks = [for ip in data.dns_a_record_set.teamcity.addrs : "${ip}/32"]
+    protocol    = "tcp"
+    description = "TeamCity agent communications"
+  }
+}
+
+
+
 output "teamcity_access_key_id" {
   value = aws_iam_access_key.teamcity.id
 }

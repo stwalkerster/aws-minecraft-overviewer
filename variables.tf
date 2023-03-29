@@ -20,12 +20,16 @@ locals {
   })
 }
 
-variable "enable_instance" {
-  default = false
-  type    = bool
+variable "availability_zone" {
+  default = "eu-west-1b"
 }
 
 variable "minecraft_version" {
   default = "1.19.4"
   type    = string
+}
+
+variable "format_volume" {
+  default = false
+  type    = bool
 }

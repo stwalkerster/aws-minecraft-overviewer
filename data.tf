@@ -50,3 +50,20 @@ data "aws_ami" "stw_overviewer" {
 data "dns_a_record_set" "teamcity" {
   host = "spearow.lon.stwalkerster.net"
 }
+
+data "aws_subnets" "public" {
+  filter {
+    name   = "vpc-id"
+    values = [data.terraform_remote_state.vpc.outputs.vpc_id]
+  }
+
+  filter {
+    name   = "tag:SubnetType"
+    values = ["Public"]
+  }
+
+  filter {
+    name   = "availability-zone"
+    values = [var.availability_zone]
+  }
+}
