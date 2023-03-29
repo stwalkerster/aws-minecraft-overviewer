@@ -24,7 +24,7 @@ source "amazon-ebs" "ubuntu" {
   run_tags             = local.tags
 
   assume_role {
-    role_arn     = "arn:aws:iam::265088867231:role/OrganizationAccountAccessRole"
+    role_arn = "arn:aws:iam::265088867231:role/OrganizationAccountAccessRole"
   }
 
   source_ami_filter {
@@ -55,6 +55,15 @@ build {
     script = "build-image.sh"
     env = {
       mc_version = var.version
+    }
+  }
+
+  post-processor "manifest" {
+    output     = "manifest.json"
+    strip_path = true
+
+    custom_data = {
+      my_custom_data = "example"
     }
   }
 }

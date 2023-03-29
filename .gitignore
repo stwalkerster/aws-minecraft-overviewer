@@ -1,3 +1,4 @@
 tfplan
 */.terraform/*
 .terraform/*
+ami/manifest.json
