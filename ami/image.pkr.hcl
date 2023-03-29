@@ -4,7 +4,7 @@ variable "region" {
 }
 
 variable "version" {
-  default = "1.19"
+  default = "1.19.4"
 }
 
 locals {

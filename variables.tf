@@ -22,6 +22,10 @@ locals {
 
 variable "enable_instance" {
   default = false
-  type = bool
-  
+  type    = bool
+}
+
+variable "minecraft_version" {
+  default = "1.19.4"
+  type    = string
 }

@@ -33,7 +33,7 @@ data "aws_ami" "stw_overviewer" {
 
   filter {
     name   = "name"
-    values = ["stwalkerster/overviewer/22.04/1.19/*"]
+    values = ["stwalkerster/overviewer/22.04/${var.minecraft_version}/*"]
   }
 
   filter {
